@@ -246,16 +246,16 @@ class Command(BaseCommand):
 
     
     def handle(self, *args, **options):
-        for i in range(len(countries)+1):
-            team_name = countries[i-1][1]
-            team,alredy_created = Team.objects.get_or_create(name = team_name,logo_uri = 'https://placeimg.com/640/480/any', club_state = countries[i-1][0])
+        for i in range(len(countries)):
+            team_name = countries[i][1]
+            team,alredy_created = Team.objects.get_or_create(name = team_name,logo_uri = 'https://placeimg.com/640/480/any', club_state = countries[i][0])
             self.stdout.write(self.style.SUCCESS('Successfully created team "%s"' % team.name))
             for j in range(number_of_player_in_each_team+1):
                  player ,alredy_created = Player.objects.get_or_create(team = team, firstname= team.name, lastname= 'Player_'+str(j), image_uri = 'https://placeimg.com/640/480/any', jersy_number = j, country =team_name)
                  self.stdout.write(self.style.SUCCESS('Successfully created Player "%s"' % player.lastname))
         
         all_team = list(Team.objects.all())
-        for z in range(number_of_matches+1):
+        for z in range(number_of_matches):
             team_1 = random.choice(all_team)
             team_2 = random.choice(all_team)
             if not team_1 == team_2:
