@@ -1,0 +1,9 @@
+<div class="form-group">
+        <label for="id_{{field.name}}" class='col-md-{{ label_span|default:"4" }} control-label'>{{label|default:field.label}}</label>
+        <div class='col-md-{{ field_span|default:"8" }}'>
+            {{field}}
+            {% if field.errors %}
+            <span class="text-red"><span class="fa fa-hand-pointer-o"></span><b> Error: </b>{{field.errors.0}}</span>
+            {% endif %}
+        </div>
+</div>

@@ -1,0 +1,43 @@
+{% load custom_tags %}
+{% load static %}
+{% load static from staticfiles %}
+{% block content %}
+<div class="box box-info">
+    <div class="box-header with-border">
+        <div class="form-group">
+            <label for="team" class="col-md-4 control-label text-primary" style="font-size: 120%;">Total Points</label>
+            <div class="col-md-8">
+                <h3>{{ total_points }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h4 class="box-title text-muted"><b>Point List</b></h4>
+    </div>
+    <div class="box-body">
+        <table class="table table-striped" id='student_list'>
+            <thead style="text-align: center;">
+                <tr>
+                    <th style="text-align: center;">Id</th>
+                    <th style="text-align: center;">Match</th>
+                    <th style="text-align: center;">Point</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match_point in matchpoints %}
+                <tr std_id="{{ match_point.id }}" class="" style="text-align: center;">
+                    <td style="text-align: center;">{{ match_point.id }}</td>
+                    <td style="text-align: center;">{{ match_point.match }}</td>
+                    <td style="text-align: center;">{{ match_point.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- end modal-->
+<script>
+</script>
+{% endblock content %}

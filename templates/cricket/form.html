@@ -1,0 +1,59 @@
+{% extends "base_templates/layout/base.html" %}
+{% load static %}
+{% load static from staticfiles %}
+{% block styles %}
+<style>
+	.title-box{
+		-webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+		-moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+		box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+
+		overflow: hidden;
+	}
+	.title-box .title-box-contents{
+	border-bottom: 4px solid #009abf;
+	}
+</style>
+{% endblock styles %}
+{% block content %}
+<div class="container">
+	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+				<div class="info-box bg-aqua title-box">
+					<span class="info-box-icon"><i class="fa fa-edit"></i></span>
+					<div class="info-box-content title-box-contents">
+						<div class="info-box-text">
+							<h3 class="">{{form_name}}</h3>
+						</div>
+					</div>
+				</div>	
+			<form id="registration_form" class='form-horizontal' action="" method="post" enctype='multipart/form-data'>
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<h4 class="box-title text-muted"><b>Please fill the required details</b></h4>
+					</div>
+					<div class="box-body">
+						{% csrf_token %}
+						{% for field in form %}
+							{% include 'cricket/form_element.html' with field=field %}
+						{% endfor %}
+					</div>
+					<div class="box-footer">
+						<button type="submit" id="save_button" class='btn btn-primary btn-lg pull-right' value="save">Save</button>
+						<a href="{{ HTTP_REFERER }}" class="btn btn-warning btn-lg">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+{% block center_js %}
+	<script>
+	$('input[data-type=date]').attr('type','date');
+	</script>
+{% endblock center_js %}

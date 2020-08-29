@@ -1,0 +1,118 @@
+{% extends "base_templates/layout/base.html" %}
+{% load static %}
+{% load static from staticfiles %}
+{% load custom_tags %}
+{% block styles %}
+<style>
+    .title-box{
+        -webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+
+        border-radius: 0px 100px 10px 0px;
+        overflow: hidden;
+    }
+    .title-box .title-box-contents{
+    border-bottom: 4px solid #b13c2e;
+    }
+</style>
+{% endblock styles %}
+{% block content %}
+<div class="container">
+    <br>
+{% if message %}
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> Message!</h4>
+        {{message}}
+    </div>
+{% endif %}
+    <div class="info-box bg-red title-box">
+        <span class="info-box-icon"><i class="fa fa-cog"></i></span>
+        <div class="info-box-content title-box-contents">
+            <div class="info-box-text">
+                <h2 class=""> Add or remove a {{ url_name }}</h2>
+            </div>
+        </div>
+    </div>  
+
+    <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">Existing Entries</h3>
+        </div>
+        <div class="box-bodyno">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                {% for name in field_names %}
+                    <th>{{ name|title }}</th>
+                {% endfor %}
+                {% if not url_name == 'matchpoint' %}
+                    <th>Action</th>
+                {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in all_data %}
+                    <tr>
+                        {% for name in field_names %}
+                            {% if name in 'name'%}
+                                <td><strong><a href="/cricket/player/?team_id={{ obj.id }}">{{ name|get_value:obj }}</a></strong></td>
+                            {% elif name == 'match_status'%}
+                                <td>{{ name|get_match_status:obj }}</td>
+                            {% elif name in 'logo_uri,image_uri'%}
+                                <td><img src="{{ name|get_value:obj }}" style="width:100px" data-toggle="modal" data-target="#showimage" class="image"></td>
+                            {% else %}
+                                <td>{{ name|get_value:obj }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not url_name == 'matchpoint' %}
+                        <td><a href="{% url url_name %}?action=edit&pk={{ obj.id }}" class= 'btn btn-primary btn-sm'>Edit</a>
+                        <a href="{% url url_name %}?action=delete&pk={{ obj.id }}" class= 'btn btn-danger btn-sm'>Delete</a></td>
+                        {% endif %}
+                    </tr> 
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if not url_name == 'matchpoint' %}
+        <div class="box-footer">
+            <a href="{% url url_name %}?action=add" class="btn btn-lg col-md-6 btn-primary pull-right">Add new {{ url_name|capfirst }}</a>
+        </div>
+        {% endif %}
+    </div>  <!-- end box -->
+    <div class="modal fade" id="showimage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Image</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" style="width:550px;height:auto;" class="modal_image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+{% block center_js %}
+<!-- Data Table -->
+ 
+    <script>
+    var table = $('.table').DataTable(
+      {
+        "pageLength": 50,
+      }
+    );
+    $("tbody").on("click",".image",function(){
+        var src_url = $(this).attr('src');
+        $(".modal_image").attr('src',src_url)
+
+    })
+    </script>
+
+{% endblock center_js %}
