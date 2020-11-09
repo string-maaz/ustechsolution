@@ -35,6 +35,7 @@ And to initalize the database with some team
 
 ```
 python manage.py initial_data
+python manage.py runserver
 ```
 
 
